@@ -1,21 +1,43 @@
 'use strict';
 /*jshint esnext: true */
 
-import MainCtrl from './main/main.controller';
 import NavbarCtrl from '../components/navbar/navbar.controller';
 
-angular.module('ngTestsuite', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'restangular', 'ui.router', 'ui.bootstrap'])
-  .controller('MainCtrl', MainCtrl)
+import TestsIndexCtrl from './tests/tests.index.controller';
+import TestsDetailCtrl from './tests/tests.detail.controller';
+
+angular.module('ngTestsuite', [
+  'ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 
+  'restangular', 'ui.router', 'ui.bootstrap', 'ui.ace'
+  ])
   .controller('NavbarCtrl', NavbarCtrl)
+
+  .controller('TestsIndexCtrl', TestsIndexCtrl)
+  .controller('TestsDetailCtrl', TestsDetailCtrl)
   
   .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
-      .state('home', {
+
+      .state('app', {
+        abstract: true,
+        templateUrl: 'app/shell/shell.html'
+      })
+
+      .state('app.tests', {
         url: '/',
-        templateUrl: 'app/main/main.html',
-        controller: 'MainCtrl'
-      });
+        templateUrl: 'app/tests/tests.index.html',
+        controller: 'TestsIndexCtrl'
+      })
+
+      .state('app.tests.detail', {
+        url: 'test/:id',
+        templateUrl: 'app/tests/tests.detail.html',
+        controller: 'TestsDetailCtrl'
+      })
+
+    ;
 
     $urlRouterProvider.otherwise('/');
+
   })
 ;
